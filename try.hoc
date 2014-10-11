@@ -1,0 +1,30 @@
+load_file("nrngui.hoc")
+load_file("mitral.hoc")
+
+
+objectvar mt[3]
+objref nconp[3],netp[3]
+for i=0, 2 {
+	mt[i]= new Mitral()
+}
+weight = 0.1
+
+for i=0, 2 {
+access mt[i].soma
+	distance()
+	netp[i] = new NetStim(0)
+	netp[i].number=1
+	netp[i].interval=500
+	netp[i].noise=0
+	netp[i].start=2
+	nconp[i]= new NetCon(netp[i],mt[i].synodor,0.5,0,weight*1.e-3) 
+}
+
+proc run() {
+	for i=0, 2 {
+	nconp[i].weight=0.45*1.e-3
+	print i, nconp[i].weight
+}
+	stdinit()
+	continuerun(tstop)
+}
